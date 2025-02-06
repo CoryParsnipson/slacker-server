@@ -1,0 +1,8 @@
+services:
+  nginx:
+    image: cparsnipson/wordpress-nginx:latest
+    ports:
+      - "80:80"
+
+#  wordpress:
+#    image: wordpress:6.7.1-php8.3-fpm

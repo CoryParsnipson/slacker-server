@@ -1,5 +1,5 @@
 USER=cparsnipson
-REPOSITORY=wordpress-ngnix
+REPOSITORY=wordpress-nginx
 
 build:
 	docker build -t ${USER}/${REPOSITORY} .

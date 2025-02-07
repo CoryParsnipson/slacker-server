@@ -1,6 +1,13 @@
 services:
   mariadb:
     image: mariadb:11.7.1-ubi9-rc
+    environment:
+      MARIADB_ROOT_PASSWORD: /run/secrets/db_root_password
+    volumes:
+      # mount with :Z option to make volume contents private to mariadb container 
+      - mariadb-volume:/var/lib/mysql:Z
+    secrets:
+      - db_root_password
 
   nginx:
     image: cparsnipson/wordpress-nginx:latest
@@ -9,3 +16,11 @@ services:
 
 #  wordpress:
 #    image: wordpress:6.7.1-php8.3-fpm
+
+secrets:
+  db_root_password:
+    file: secrets/db-root-password.txt
+
+volumes:
+  mariadb-volume:
+    external: false

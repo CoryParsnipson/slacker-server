@@ -1,10 +1,11 @@
-BACKEND_NETWORK=test-network
+BACKEND_NETWORK=wordpress_backend
 
 MARIADB_TAG=11.7.1-ubi9-rc
 
-MARIADB_CONTAINER_NAME=mariadb-test
-MARIADB_VOLUME_NAME=wordpress-mariadb
+MARIADB_CONTAINER_NAME=wordpress-mariadb-1
+MARIADB_VOLUME_NAME=mariadb-volume
 MARIADB_DATA_DIR=/var/lib/mysql
+MARIADB_USER_NAME=mysql
 MARIADB_ROOT_PASSWORD=password # this is for testing only...
 
 # run docker compose up

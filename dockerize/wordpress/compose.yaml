@@ -1,13 +1,21 @@
 services:
   mariadb:
+    restart: always
     image: mariadb:11.7.1-ubi9-rc
     environment:
-      MARIADB_ROOT_PASSWORD: /run/secrets/db_root_password
+      MARIADB_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+      MARIADB_USER_FILE:          /run/secrets/db_user_name
+      MARIADB_PASSWORD_FILE:      /run/secrets/db_user_password
+      MARIADB_DATABASE_FILE:      /run/secrets/db_name
     volumes:
-      # mount with :Z option to make volume contents private to mariadb container 
-      - mariadb-volume:/var/lib/mysql:Z
+      - mariadb-volume:/var/lib/mysql
     secrets:
       - db_root_password
+      - db_user_name
+      - db_user_password
+      - db_name
+    networks:
+      - backend
 
   nginx:
     image: cparsnipson/wordpress-nginx:latest
@@ -17,10 +25,19 @@ services:
 #  wordpress:
 #    image: wordpress:6.7.1-php8.3-fpm
 
-secrets:
-  db_root_password:
-    file: secrets/db-root-password.txt
-
 volumes:
   mariadb-volume:
     external: false
+
+secrets:
+  db_root_password:
+    file: secrets/db-root-password.txt
+  db_user_name:
+    file: secrets/db-user-name.txt
+  db_user_password:
+    file: secrets/db-user-password.txt
+  db_name:
+    file: secrets/db-name.txt
+
+networks:
+  backend:

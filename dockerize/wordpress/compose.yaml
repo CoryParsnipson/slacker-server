@@ -8,7 +8,7 @@ services:
       MARIADB_PASSWORD_FILE:      /run/secrets/db_user_password
       MARIADB_DATABASE_FILE:      /run/secrets/db_name
     volumes:
-      - mariadb-volume:/var/lib/mysql
+      - mariadb_data:/var/lib/mysql
     secrets:
       - db_root_password
       - db_user_name
@@ -17,16 +17,36 @@ services:
     networks:
       - backend
 
+  wordpress:
+    image: wordpress:6.7.1-php8.3-fpm
+    restart: always
+    depends_on:
+      - mariadb
+    environment:
+      WORDPRESS_DB_HOST:          mariadb  # use the id of db container
+      WORDPRESS_DB_USER_FILE:     /run/secrets/db_user_name
+      WORDPRESS_DB_PASSWORD_FILE: /run/secrets/db_user_password
+      WORDPRESS_DB_NAME_FILE:     /run/secrets/db_name
+    volumes:
+      - wordpress_data:/var/www/html
+    networks:
+      - backend
+
   nginx:
     image: cparsnipson/wordpress-nginx:latest
+    restart: always
+    depends_on:
+      - mariadb
+      - wordpress
+    volumes:
+      - wordpress_data:/usr/share/nginx/html/wordpress
     ports:
       - "80:80"
 
-#  wordpress:
-#    image: wordpress:6.7.1-php8.3-fpm
-
 volumes:
-  mariadb-volume:
+  mariadb_data:
+    external: false
+  wordpress_data:
     external: false
 
 secrets:

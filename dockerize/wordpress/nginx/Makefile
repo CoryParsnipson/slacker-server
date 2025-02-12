@@ -1,8 +1,0 @@
-USER=cparsnipson
-REPOSITORY=wordpress-nginx
-
-build:
-	docker build -t ${USER}/${REPOSITORY} .
-
-.PHONY run:
-	docker run -d ${USER}/${REPOSITORY}

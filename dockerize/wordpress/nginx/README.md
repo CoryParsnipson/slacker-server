@@ -1,3 +1,3 @@
 # nginx
 
-Dockerized nginx with custom build
+Config files for nginx container.

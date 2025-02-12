@@ -16,6 +16,14 @@ compose:
 decompose:
 	docker compose down
 
+delete-volumes:
+	docker volume prune -af
+
+delete-networks:
+	docker network prune -f
+
+.PHONY clean: decompose delete-volumes delete-networks
+
 # bootstrap a mariadb container instance (will initialize the database on first run)
 # WARNING: do not use this instance unless you've changed the environment variables
 mariadb-init:

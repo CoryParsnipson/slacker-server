@@ -27,12 +27,15 @@ services:
       WORDPRESS_DB_USER_FILE:     /run/secrets/db_user_name
       WORDPRESS_DB_PASSWORD_FILE: /run/secrets/db_user_password
       WORDPRESS_DB_NAME_FILE:     /run/secrets/db_name
+      WORDPRESS_DATA_DIR:         /var/www/html/blog # should be same as working dir
     # change default wordpress public directory from /var/www/html
     working_dir: /var/www/html/blog
     volumes:
       # mountpoint must be exactly the same as the wordpress_data mountpoint
       # in the nginx container
       - wordpress_data:/var/www/html/blog
+      - ./wordpress/init.sh:/usr/bin/init.sh
+    entrypoint: [ "init.sh" ]
     secrets:
       - db_user_name
       - db_user_password

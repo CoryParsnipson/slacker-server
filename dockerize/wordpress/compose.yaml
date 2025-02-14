@@ -1,4 +1,5 @@
 # use yaml anchors to avoid some duplication
+# public-root-path and public-root-volume must be exactly the same!
 x-public-root-path: &public-root-path /var/www/html/blog
 x-public-root-volume: &public-root-volume wordpress_data:/var/www/html/blog
 
@@ -47,6 +48,24 @@ services:
     networks:
       - backend
 
+  certbot:
+    image: certbot/certbot:v3.2.0
+    depends_on:
+      # nginx needs to be up with the /.well-known/acme-challenge endpoint for
+      # certbot to successfully request a certificate. Once the certificate is
+      # downloaded, we need to modify the nginx config with ssl info and restart it
+      - nginx
+    environment:
+      FIRST_RUN_DETECTION_FILE: /var/www/certbot/init_was_run # path must point inside a mounted volume
+      CERTBOT_WEBROOT: /var/www/certbot/ # this must be the same mountpoint as certbot_data
+      CERTBOT_DRYRUN: 0
+      CERTBOT_USE_STAGING: 1
+    volumes:
+      - certbot_data:/var/www/certbot/:rw
+      - certbot_certs:/etc/letsencrypt/:rw
+      - ./certbot/init.sh:/usr/bin/init.sh
+    entrypoint: [ "init.sh" ]
+
   nginx:
     image: nginx:1.27.3
     restart: always
@@ -55,20 +74,29 @@ services:
       - wordpress
     volumes:
       - nginx_logs:/etc/nginx/logs
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf.d:/etc/nginx/conf.d
       - *public-root-volume
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - certbot_data:/var/www/certbot/:ro
+      - certbot_certs:/etc/nginx/ssl/:ro
     networks:
       - backend
     ports:
       - "80:80"
+      - "443:443"
 
 volumes:
   mariadb_data:
     external: false
   wordpress_data:
     external: false
+  nginx_config:
+    external: false
   nginx_logs:
+    external: false
+  certbot_data:
+    external: false
+  certbot_certs:
     external: false
 
 secrets:

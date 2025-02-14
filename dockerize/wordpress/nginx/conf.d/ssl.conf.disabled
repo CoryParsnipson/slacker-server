@@ -8,9 +8,30 @@ server {
   root /var/www/html;
 
   # for certbot ssl endpoint
-  location /.well-known/acme-challenge/ {
+  location /.well-known/acme-challenge/	{
     root /var/www/certbot;
   }
+
+  # redirect http users to https
+  location / {
+    return 301 https://slackerparadise.com$request_uri;
+  }
+}
+
+server {
+  #listen       443 default_server ssl;
+  #listen  [::]:443 ssl;
+  listen       443 default_server;
+  listen  [::]:443;
+  http2   on;
+
+  server_name  localhost slackerparadise.com www.slackerparadise.com;
+  server_tokens off;
+
+  #ssl_certificate /etc/nginx/ssl/live/slackerparadise.com/fullchain.pem;
+  #ssl_certificate_key /etc/nginx/ssl/live/slackerparadise.com/privkey.pem;
+
+  root /var/www/html;
 
   # redirect the top level domain to the /blog section for now
   location = / {

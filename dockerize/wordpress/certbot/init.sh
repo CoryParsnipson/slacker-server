@@ -1,18 +1,21 @@
 #!/bin/sh
+
+CERTBOT_CERT_DIR=/etc/letsencrypt
 CERTBOT_WEBROOT=${CERTBOT_WEBROOT:-/var/www/certbot/}
 CERTBOT_EMAIL=${CERTBOT_EMAIL:-cparsnipson@gmail.com}
 CERTBOT_DOMAIN=${CERTBOT_DOMAIN:-slackerparadise.com}
 CERTBOT_DRYRUN=${CERTBOT_DRYRUN:-0}
 CERTBOT_USE_STAGING=${CERTBOT_USE_STAGING:-0}
+CERTBOT_LEAVE_CONTAINER_RUNNING=${CERTBOT_LEAVE_CONTAINER_RUNNING:-0}
+
+CERTBOT_CERT_PATH=${CERTBOT_CERT_DIR}/live/${CERTBOT_DOMAIN}
 
 echo " -- Running certbot custom init..."
+echo " -- Checking for ${CERTBOT_CERT_PATH}/fullchain.pem and ${CERTBOT_CERT_PATH}/privkey.pem"
 
-if [ ! -f $FIRST_RUN_DETECTION_FILE ]; then
+if [[ ! -f ${CERTBOT_CERT_PATH}/fullchain.pem || ! -f ${CERTBOT_CERT_PATH}/privkey.pem ]]; then
   # script is running for the first time
-  echo " -- Certbot init running for the first time..."
-  touch $FIRST_RUN_DETECTION_FILE
-
-  echo " -- Applying for ssl certificate"
+  echo " -- No certs detected. Applying for ssl certificate"
 
   if [ $CERTBOT_DRYRUN -ne 0 ]; then
     DRYRUN="--dry-run"
@@ -35,4 +38,7 @@ else
   echo " -- Certbot init script already run. Skipping..."
 fi
 
-tail -f ${FIRST_RUN_DETECTION_FILE}
+if [ $CERTBOT_LEAVE_CONTAINER_RUNNING -ne 0 ]; then
+  touch $CERTBOT_WEBROOT/temp
+  tail -f $CERTBOT_WEBROOT/temp
+fi

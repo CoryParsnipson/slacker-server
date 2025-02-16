@@ -56,7 +56,6 @@ services:
       # downloaded, we need to modify the nginx config with ssl info and restart it
       - nginx
     environment:
-      FIRST_RUN_DETECTION_FILE: /var/www/certbot/init_was_run # path must point inside a mounted volume
       CERTBOT_WEBROOT: /var/www/certbot/ # this must be the same mountpoint as certbot_data
       CERTBOT_DRYRUN: 0
       CERTBOT_USE_STAGING: 1

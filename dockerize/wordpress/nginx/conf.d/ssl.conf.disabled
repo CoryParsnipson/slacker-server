@@ -19,17 +19,15 @@ server {
 }
 
 server {
-  #listen       443 default_server ssl;
-  #listen  [::]:443 ssl;
-  listen       443 default_server;
-  listen  [::]:443;
+  listen       443 default_server ssl;
+  listen  [::]:443 ssl;
   http2   on;
 
   server_name  localhost slackerparadise.com www.slackerparadise.com;
   server_tokens off;
 
-  #ssl_certificate /etc/nginx/ssl/live/slackerparadise.com/fullchain.pem;
-  #ssl_certificate_key /etc/nginx/ssl/live/slackerparadise.com/privkey.pem;
+  ssl_certificate /etc/nginx/ssl/live/slackerparadise.com/fullchain.pem;
+  ssl_certificate_key /etc/nginx/ssl/live/slackerparadise.com/privkey.pem;
 
   root /var/www/html;
 

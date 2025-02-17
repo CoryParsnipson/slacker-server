@@ -8,13 +8,13 @@ server {
   root /var/www/html;
 
   # for certbot ssl endpoint
-  location /.well-known/acme-challenge/	{
+  location /.well-known/acme-challenge/ {
     root /var/www/certbot;
   }
 
   # redirect http users to https
   location / {
-    return 301 https://slackerparadise.com$request_uri;
+    return 301 https://$host$request_uri;
   }
 }
 

@@ -70,6 +70,22 @@ services:
       - ./certbot/init.sh:/usr/bin/init.sh
     entrypoint: [ "init.sh" ]
 
+  fail2ban:
+    image: linuxserver/fail2ban:1.1.0
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+    volumes:
+      - nginx_logs:/remotelogs/nginx:ro
+      - ./fail2ban/filter.d/wordpress.conf:/config/fail2ban/filter.d/wordpress.conf:ro
+      - ./fail2ban/jail.local:/config/fail2ban/jail.local:ro
+
   nginx:
     image: nginx:1.27.3
     restart: always

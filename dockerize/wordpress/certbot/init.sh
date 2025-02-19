@@ -41,7 +41,7 @@ else
   echo " -- Certbot init script already run. Skipping..."
 fi
 
-if [ $CERTBOT_LEAVE_CONTAINER_RUNNING -ne 0 ]; then
-  touch $CERTBOT_WEBROOT/temp
-  tail -f $CERTBOT_WEBROOT/temp
-fi
+# always tail this file to keep the container ruunning indefinitely
+# (this container needs to be running 24/7 for the renewal cron job)
+touch $CERTBOT_WEBROOT/keep-running-file
+tail -f $CERTBOT_WEBROOT/keep-running-file

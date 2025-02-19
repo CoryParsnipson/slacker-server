@@ -63,7 +63,6 @@ services:
       CERTBOT_USE_STAGING: 0
       CERTBOT_EMAIL: *email
       CERTBOT_DOMAIN: *domain
-      CERTBOT_LEAVE_CONTAINER_RUNNING: 0
     volumes:
       - certbot_data:/var/www/certbot/:rw
       - certbot_certs:/etc/letsencrypt/:rw

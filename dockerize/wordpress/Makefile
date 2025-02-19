@@ -9,11 +9,11 @@ MARIADB_USER_NAME=mysql
 MARIADB_ROOT_PASSWORD=password # this is for testing only...
 
 # run docker compose up
-compose:
+up:
 	docker compose up -d --build
 
 # run docker compose down
-decompose:
+down:
 	docker compose down
 
 delete-volumes:

@@ -31,8 +31,11 @@ if [[ ! -f ${CERTBOT_CERT_PATH}/fullchain.pem || ! -f ${CERTBOT_CERT_PATH}/privk
 
   # if the certonly command was successful...
   if [ $? -eq 0 ]; then
-    # TODO: setup cronjob for certificate renewal & check
-    echo "certonly successful!"
+    echo " -- Certificate provisioning successful. Setting up automated renewal check..."
+
+    # modified from the original command in certbot docs to check once a day at midnight
+    # honestly, I think once a month would be sufficient
+    SLEEPTIME=$(awk 'BEGIN{srand(); print int(rand()*(3600+1))}'); echo "0 0 * * * root sleep $SLEEPTIME && certbot renew -q" | tee -a /etc/crontab > /dev/null
   fi
 else
   echo " -- Certbot init script already run. Skipping..."

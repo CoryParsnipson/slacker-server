@@ -60,7 +60,7 @@ services:
     environment:
       CERTBOT_WEBROOT: /var/www/certbot/ # this must be the same mountpoint as certbot_data
       CERTBOT_DRYRUN: 0
-      CERTBOT_USE_STAGING: 1
+      CERTBOT_USE_STAGING: 0
       CERTBOT_EMAIL: *email
       CERTBOT_DOMAIN: *domain
       CERTBOT_LEAVE_CONTAINER_RUNNING: 0

@@ -8,7 +8,7 @@ x-email: &email cparsnipson@gmail.com
 services:
   mariadb:
     restart: always
-    image: mariadb:11.7.1-ubi9-rc
+    image: mariadb:11.8.1-ubi9-rc
     environment:
       MARIADB_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
       MARIADB_USER_FILE:          /run/secrets/db_user_name

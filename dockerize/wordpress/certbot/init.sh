@@ -25,6 +25,8 @@ if [[ ! -f ${CERTBOT_CERT_PATH}/fullchain.pem || ! -f ${CERTBOT_CERT_PATH}/privk
     STAGING="--test-cert"
   fi
 
+  sleep 1 # add this in case nginx isn't ready to serve endpoints yet
+
   # run certonly to get certificate
   echo "certbot certonly --webroot --webroot-path ${CERTBOT_WEBROOT} --agree-tos ${DRYRUN} ${STAGING} -m ${CERTBOT_EMAIL} -n -d ${CERTBOT_DOMAIN}"
   certbot certonly --webroot --webroot-path ${CERTBOT_WEBROOT} --agree-tos ${DRYRUN} ${STAGING} -m ${CERTBOT_EMAIL} -n -d ${CERTBOT_DOMAIN}

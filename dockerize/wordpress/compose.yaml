@@ -107,8 +107,8 @@ services:
       TZ: America/Los_Angeles
     volumes:
       - nginx_logs:/remotelogs/nginx:ro
-      - ./fail2ban/filter.d/wordpress.conf:/config/fail2ban/filter.d/wordpress.conf
-      - ./fail2ban/jail.local:/config/fail2ban/jail.local
+      - ./fail2ban/filter.d/wordpress.conf:/config/fail2ban/filter.d/wordpress.conf:ro
+      - ./fail2ban/jail.local:/config/fail2ban/jail.local:ro
 
   nginx:
     image: nginx:1.27.3

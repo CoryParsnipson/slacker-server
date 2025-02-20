@@ -50,6 +50,31 @@ services:
     networks:
       - backend
 
+  phpmyadmin:
+    image: phpmyadmin:5.2.2-fpm-alpine
+    restart: always
+    depends_on:
+      - mariadb
+    environment:
+      PUID: 33
+      PGID: 33
+      PMA_HOST: mariadb
+      PMA_PMADB: phpmyadmin
+      TZ: America/Los_Angeles
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+      MYSQL_USER_FILE:          /run/secrets/db_user_name
+      MYSQL_PASSWORD_FILE:      /run/secrets/db_user_password
+    volumes:
+      - ./phpmyadmin/init.sh:/usr/bin/init.sh
+      - phpmyadmin_data:/var/www/html/pma
+    entrypoint: [ "init.sh" ]
+    secrets:
+      - db_root_password
+      - db_user_name
+      - db_user_password
+    networks:
+      - backend
+
   certbot:
     image: certbot/certbot:v3.2.0
     depends_on:
@@ -91,9 +116,11 @@ services:
     depends_on:
       - mariadb
       - wordpress
+      - phpmyadmin
     environment:
       NGINX_DOMAIN: *domain
       NGINX_CONF_PATH: /etc/nginx/conf.d
+    user: root
     volumes:
       - nginx_logs:/etc/nginx/logs
       - nginx_config:/etc/nginx/conf.d
@@ -102,6 +129,7 @@ services:
       - ./nginx/launch_init.sh:/docker-entrypoint.d/launch_init.sh
       - ./nginx/init.sh:/usr/bin/init.sh
       - *public-root-volume
+      - phpmyadmin_data:/var/www/html/pma
       - certbot_data:/var/www/certbot/:ro
       - certbot_certs:/etc/nginx/ssl/:ro
     networks:
@@ -114,6 +142,8 @@ volumes:
   mariadb_data:
     external: false
   wordpress_data:
+    external: false
+  phpmyadmin_data:
     external: false
   nginx_config:
     external: false

@@ -1,8 +1,24 @@
+# this server block is to catch unmatched server_name requests and return an
+# automatic 404. For example, non_existent_subdomain.example.com will default
+# to this server block and issue a 404 if it is not defined in another server
+# block
 server {
   listen       80;
   listen  [::]:80;
 
-  server_name  localhost slackerparadise.com www.slackerparadise.com;
+  server_name _;
+  server_tokens off;
+
+  location = / {
+    return 404;
+  }
+}
+
+server {
+  listen       80;
+  listen  [::]:80;
+
+  server_name  $NGINX_DOMAIN;
   server_tokens off;
 
   root /var/www/html;
@@ -12,12 +28,8 @@ server {
     root /var/www/certbot;
   }
 
-  # redirect the top level domain to the /blog section for now
-  location = / {
-    return 301 /blog;
-  }
-
-  location /blog {
+  location / {
+    try_files $uri $uri/ /index.php$is_args$args;
     index index.htm index.html index.php;
   }
 

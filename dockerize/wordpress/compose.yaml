@@ -1,8 +1,8 @@
 # use yaml anchors to avoid some duplication
 # public-root-path and public-root-volume must be exactly the same!
-x-public-root-path: &public-root-path /var/www/html/blog
-x-public-root-volume: &public-root-volume wordpress_data:/var/www/html/blog
-x-domain: &domain slackerparadise.com
+x-public-root-path: &public-root-path /var/www/html
+x-public-root-volume: &public-root-volume wordpress_data:/var/www/html
+x-domain: &domain blog.slackerparadise.com
 x-email: &email cparsnipson@gmail.com
 
 services:
@@ -125,7 +125,7 @@ services:
       - nginx_logs:/etc/nginx/logs
       - nginx_config:/etc/nginx/conf.d
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx/conf.d:/etc/nginx/conf.d.orig:ro
+      - ./nginx/conf.d:/etc/nginx/templates:ro
       - ./nginx/launch_init.sh:/docker-entrypoint.d/launch_init.sh
       - ./nginx/init.sh:/usr/bin/init.sh
       - *public-root-volume

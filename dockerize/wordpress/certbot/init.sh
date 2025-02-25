@@ -6,7 +6,6 @@ CERTBOT_EMAIL=${CERTBOT_EMAIL:-root@localhost}
 CERTBOT_DOMAIN=${CERTBOT_DOMAIN:-localhost}
 CERTBOT_DRYRUN=${CERTBOT_DRYRUN:-0}
 CERTBOT_USE_STAGING=${CERTBOT_USE_STAGING:-0}
-CERTBOT_LEAVE_CONTAINER_RUNNING=${CERTBOT_LEAVE_CONTAINER_RUNNING:-0}
 
 CERTBOT_CERT_PATH=${CERTBOT_CERT_DIR}/live/${CERTBOT_DOMAIN}
 
@@ -38,6 +37,10 @@ if [[ ! -f ${CERTBOT_CERT_PATH}/fullchain.pem || ! -f ${CERTBOT_CERT_PATH}/privk
     # modified from the original command in certbot docs to check once a day at midnight
     # honestly, I think once a month would be sufficient
     SLEEPTIME=$(awk 'BEGIN{srand(); print int(rand()*(3600+1))}'); echo "0 0 * * * root sleep $SLEEPTIME && certbot renew -q" | tee -a /etc/crontab > /dev/null
+
+    # the above command will not write to the file, I think because the script doesn't exit (see tail -f below)
+    # lets put a sleep here and see if that frees up the OS to flush the crontab file
+    sleep 0.1
   fi
 else
   echo " -- Certbot init script already run. Skipping..."

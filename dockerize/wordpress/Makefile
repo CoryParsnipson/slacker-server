@@ -22,7 +22,8 @@ delete-volumes:
 delete-networks:
 	docker network prune -f
 
-.PHONY clean: down delete-volumes delete-networks
+clean:
+	docker compose down -v
 
 # bootstrap a mariadb container instance (will initialize the database on first run)
 # WARNING: do not use this instance unless you've changed the environment variables

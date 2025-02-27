@@ -33,18 +33,17 @@ if [[ ! -f ${CERTBOT_CERT_PATH}/fullchain.pem || ! -f ${CERTBOT_CERT_PATH}/privk
   # if the certonly command was successful...
   if [ $? -eq 0 ]; then
     echo " -- Certificate provisioning successful. Setting up automated renewal check..."
-
-    # modified from the original command in certbot docs to check once a day at midnight
-    # honestly, I think once a month would be sufficient
-    SLEEPTIME=$(awk 'BEGIN{srand(); print int(rand()*(3600+1))}'); echo "0 0 * * * root sleep $SLEEPTIME && certbot renew -q" | tee -a /etc/crontab > /dev/null
-
-    # the above command will not write to the file, I think because the script doesn't exit (see tail -f below)
-    # lets put a sleep here and see if that frees up the OS to flush the crontab file
-    sleep 0.1
   fi
 else
   echo " -- Certbot init script already run. Skipping..."
 fi
+
+
+echo " -- Setting up cronjob for ssl cert renewal"
+
+# modified from the original command in certbot docs to check once a day at midnight
+# honestly, I think once a month would be sufficient
+SLEEPTIME=$(awk 'BEGIN{srand(); print int(rand()*(3600+1))}'); echo "0 0 * * * root sleep $SLEEPTIME && certbot renew -q" | tee -a /etc/crontab > /dev/null
 
 # always tail this file to keep the container ruunning indefinitely
 # (this container needs to be running 24/7 for the renewal cron job)

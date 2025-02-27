@@ -133,9 +133,7 @@ services:
       - certbot_certs:/etc/nginx/ssl/:ro
     networks:
       - backend
-    ports:
-      - "80:80"
-      - "443:443"
+      - entry_default
 
 volumes:
   mariadb_data:
@@ -165,3 +163,5 @@ secrets:
 
 networks:
   backend:
+  entry_default:
+    external: true

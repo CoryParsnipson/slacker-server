@@ -39,8 +39,8 @@ server {
 # to this server block and issue a 404 if it is not defined in another server
 # block
 server {
-  listen       443;
-  listen  [::]:443;
+  listen       443 ssl;
+  listen  [::]:443 ssl;
   http2   on;
 
   server_name _;

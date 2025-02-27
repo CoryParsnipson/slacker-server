@@ -21,6 +21,9 @@ services:
     volumes:
       - ./data:/data
       - ./letsencrypt:/etc/letsencrypt
+    networks:
+      - default
+      - wordpress_backend
 
   db:
     image: jc21/mariadb-aria:10.11.5
@@ -48,3 +51,7 @@ secrets:
     file: secrets/db-root-password.txt
   db_user_password:
     file: secrets/db-user-password.txt
+
+networks:
+  wordpress_backend:
+    external: true

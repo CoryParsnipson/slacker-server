@@ -1,0 +1,50 @@
+name: entry
+
+services:
+  proxy:
+    image: jc21/nginx-proxy-manager:2.12.3
+    restart: unless-stopped
+    depends_on:
+      - db
+    ports:
+      - "80:80"
+      - "9000:81"
+      - "443:443"
+    environment:
+      DB_MYSQL_HOST: "db"
+      DB_MYSQL_PORT: 3306
+      DB_MYSQL_USER: "npm"
+      DB_MYSQL_PASSWORD__FILE: /run/secrets/db_user_password
+      DB_MYSQL_NAME: "npm"
+    secrets:
+      - db_user_password
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+
+  db:
+    image: jc21/mariadb-aria:10.11.5
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD__FILE: /run/secrets/db_root_password
+      MYSQL_DATABASE: "npm"
+      MYSQL_USER: "npm"
+      MYSQL_PASSWORD__FILE: /run/secrets/db_user_password
+      MARIADB_AUTO_UPGRADE: "1"
+    secrets:
+      - db_root_password
+      - db_user_password
+    volumes:
+      - ./mysql:/var/lib/mysql
+
+volumes:
+  nginx_config:
+    external: false
+  nginx_logs:
+    external: false
+
+secrets:
+  db_root_password:
+    file: secrets/db-root-password.txt
+  db_user_password:
+    file: secrets/db-user-password.txt

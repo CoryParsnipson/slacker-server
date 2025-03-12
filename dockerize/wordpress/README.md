@@ -31,3 +31,13 @@ Note, some things like volumes will still be around after this command.
 ## More useful commands
 
 Check the Makefile for useful commands, related to bootstrapping containers.
+
+## Further (Manual) Wordpress Configuration Recommendations
+
+1. Change the login url from /wp-login.php (to deter hackers) with the "WPS Hide Login" plugin. I changed this to `/auth`. You can also increase the strictness of fail2ban to immediately ban every ip that now requests wp-login.php
+
+1. Disable xmlrpc.php. See here for more information: `https://www.hostinger.com/tutorials/xmlrpc-wordpress`. Install the "Disable XML-RPC-API" plugin to do this.
+
+1. Remove the default plugins and delete unused themes (this will speed up the website slightly).
+
+1. Change the permalinks scheme to use post-name for better human readability of posts. (go to the Admin Dashboard > Settings > Permalinks > Permalink Structure)

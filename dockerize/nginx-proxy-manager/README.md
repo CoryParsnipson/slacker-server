@@ -52,8 +52,8 @@ This compose file brings up the nginx-proxy-manager docker image to let the user
 ### Setup Crowdsec
 
 Referencing these tutorials:
-  1. `[https://www.crowdsec.net/blog/secure-docker-compose-stacks-with-crowdsec](https://www.crowdsec.net/blog/secure-docker-compose-stacks-with-crowdsec)`
-  1. `[https://www.simplehomelab.com/crowdsec-docker-compose-1-fw-bouncer/](https://www.simplehomelab.com/crowdsec-docker-compose-1-fw-bouncer/)`
+  1. [`https://www.crowdsec.net/blog/secure-docker-compose-stacks-with-crowdsec`](https://www.crowdsec.net/blog/secure-docker-compose-stacks-with-crowdsec)
+  1. [`https://www.simplehomelab.com/crowdsec-docker-compose-1-fw-bouncer/`](https://www.simplehomelab.com/crowdsec-docker-compose-1-fw-bouncer/)
 
 1. Install crowdsec bouncers. Download the "firewall" bouncer from the [crowdsec hub website](https://app.crowdsec.net/hub/author/crowdsecurity/remediation-components/cs-firewall-bouncer):
 
@@ -119,24 +119,24 @@ Referencing these tutorials:
 
 ## Crowdsec Cheatsheet
 
-*. Check crowdsec configuration:
+* Check crowdsec configuration:
 
    ```docker-compose exec crowdsec cscli hub list```
 
-*. Check crowdsec metrics:
+* Check crowdsec metrics:
 
    ```docker-compose exec crowdsec cscli metrics```
 
-*. Check on active decisions:
+* Check on active decisions:
 
    ```docker-compose exec crowdsec cscli decisions list```
 
-*. Check on alerts:
+* Check on alerts:
 
    ```docker-compose exec crowdsec cscli alerts list```
 
    > NOTE: viewing decisions and alerts is much nicer using the metabase dashboard instead
 
-*. Inspect an alert in more detail:
+* Inspect an alert in more detail:
 
    ```docker-compose exec crowdsec cscli alerts inspect -d <alert id>```

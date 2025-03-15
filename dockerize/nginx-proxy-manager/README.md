@@ -119,24 +119,24 @@ Referencing these tutorials:
 
 ## Crowdsec Cheatsheet
 
-* Check crowdsec configuration:
+### Check crowdsec configuration:
 
    ```docker-compose exec crowdsec cscli hub list```
 
-* Check crowdsec metrics:
+### Check crowdsec metrics:
 
    ```docker-compose exec crowdsec cscli metrics```
 
-* Check on active decisions:
+### Check on active decisions:
 
    ```docker-compose exec crowdsec cscli decisions list```
 
-* Check on alerts:
+### Check on alerts:
 
    ```docker-compose exec crowdsec cscli alerts list```
 
    > NOTE: viewing decisions and alerts is much nicer using the metabase dashboard instead
 
-* Inspect an alert in more detail:
+### Inspect an alert in more detail:
 
    ```docker-compose exec crowdsec cscli alerts inspect -d <alert id>```

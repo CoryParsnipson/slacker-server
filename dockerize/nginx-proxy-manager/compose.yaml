@@ -40,10 +40,47 @@ services:
     volumes:
       - ./mysql:/var/lib/mysql
 
+  crowdsec:
+    image: crowdsecurity/crowdsec:v1.6.5-debian
+    restart: unless-stopped
+    environment:
+      COLLECTIONS: "crowdsecurity/nginx"
+      GID: "${GID:-1000}"
+    depends_on:
+      - "proxy"
+    volumes:
+      - crowdsec_config:/etc/crowdsec
+      - crowdsec_data:/var/lib/crowdsec/data
+      - ./data/logs:/var/log/nginx:ro
+      - ./crowdsec/acquis.d:/etc/crowdsec/acquis.d
+    ports:
+      # expose this port for localhost access (but if NAT loopback was supported, we could avoid exposing this port and make a proxy host for this)
+      - "8999:8080"
+    networks:
+      - default
+      - wordpress_backend
+
+  metabase:
+    # this special image copies metabase-sql.zip to the image, as a workaround for the previously deprecated method of configuring metabase on a separate container from crowdsec
+    build: ./crowdsec/dashboard
+    restart: unless-stopped
+    environment:
+      MB_DB_FILE: /data/metabase.db
+      MGID: "${GID:-1000}"
+    depends_on:
+      - "crowdsec"
+    volumes:
+      # re-use crowdsec data volume so we can see its files too
+      - crowdsec_data:/metabase-data
+
 volumes:
   nginx_config:
     external: false
   nginx_logs:
+    external: false
+  crowdsec_config:
+    external: false
+  crowdsec_data:
     external: false
 
 secrets:

@@ -1,0 +1,4 @@
+journalctl_filter:
+  - _SYSTEMD_UNIT=sshd.service
+labels:
+  type: syslog

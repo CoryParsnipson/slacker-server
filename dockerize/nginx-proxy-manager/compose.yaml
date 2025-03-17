@@ -53,6 +53,7 @@ services:
       - crowdsec_data:/var/lib/crowdsec/data
       - ./data/logs:/var/log/nginx:ro
       - ./crowdsec/acquis.d:/etc/crowdsec/acquis.d
+      - "${JOURNALCTL_VOL:-/var/log/journal}:/run/log/journal"
     ports:
       # expose this port for localhost access (but if NAT loopback was supported, we could avoid exposing this port and make a proxy host for this)
       - "8999:8080"

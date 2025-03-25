@@ -90,6 +90,11 @@ server {
     fastcgi_param PATH_INFO $fastcgi_path_info;
   }
 
+  # restrict access to non public wordpress files
+  location ~ /crowdsec/(cache|logs|inc/standalone-settings) {
+    deny all;
+  }
+
   # php rules
   location ~ \.php$ {
     try_files $fastcgi_script_name = 404;
@@ -104,11 +109,6 @@ server {
     # fastcgi params
     fastcgi_param DOCUMENT_ROOT   $realpath_root;
     fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
-  }
-
-  # restrict access to non public wordpress files
-  location ~ /crowdsec/(cache|logs|inc/standalone-settings) {
-    deny all;
   }
 
   #error_page  404             /404.html;

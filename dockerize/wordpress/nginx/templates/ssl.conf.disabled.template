@@ -109,6 +109,7 @@ server {
     # fastcgi params
     fastcgi_param DOCUMENT_ROOT   $realpath_root;
     fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+    fastcgi_param PHP_VALUE       "auto_prepend_file=$realpath_root/wp-content/plugins/crowdsec/inc/standalone-bounce.php";
   }
 
   #error_page  404             /404.html;

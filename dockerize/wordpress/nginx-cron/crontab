@@ -1,0 +1,1 @@
+*/5 * * * * echo "Running wp-cron at $(date)..." && wget -q -O - --no-check-certificate https://nginx/wp-cron.php?doing_wp_cron >/dev/null 2>&1

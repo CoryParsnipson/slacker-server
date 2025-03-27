@@ -137,6 +137,18 @@ services:
       - backend
       - entry_default
 
+  wp-cron:
+    image: alpine:3.21.3
+    restart: unless-stopped
+    depends_on:
+      - wordpress
+      - nginx
+    command: ["crond", "-f"]
+    volumes:
+      - ./nginx-cron/crontab:/var/spool/cron/crontabs/root:rw
+    networks:
+      - entry_default
+
 volumes:
   mariadb_data:
     external: false

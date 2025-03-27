@@ -54,6 +54,10 @@ It is highly recommended to integrate the wordpress bouncer with crowdsec, if th
 
 1. Toggle the "Use cURL to call Local API" to `on`. Since this is on a separate container, we will need to use the curl function. This requires curl to be installed on the crowdsec container (it should be). You can scroll down and click "Test bouncing" to see if the curl method is working.
 
+1. Disable WP internal cron (if loopback NAT curl is failing) by going to wp-config.php and adding `DEFINE( 'DISABLE_WP_CRON', true );` to the file.
+
+   > NOTE: if the curl loopback is working, the wp-cron container is not needed at all and can be removed.
+
 1. Use 10 seconds for a timeout to make it snappy. Set level to "normal bouncing" and make sure that "public website only" is `off`, so the admin dashboard is also protected.
 
 1. Under the "Advanced" tab of the crowdsec plugin settings, you can enable "stream" mode (there apparently is no downside to having this on).

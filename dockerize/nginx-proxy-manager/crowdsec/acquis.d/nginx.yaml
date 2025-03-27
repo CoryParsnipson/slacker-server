@@ -1,4 +1,5 @@
 filenames:
   - /var/log/nginx/*.log
+  - /var/log/wordpress/*.log
 labels:
   type: nginx

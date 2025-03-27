@@ -52,6 +52,7 @@ services:
       - crowdsec_config:/etc/crowdsec
       - crowdsec_data:/var/lib/crowdsec/data
       - ./data/logs:/var/log/nginx:ro
+      - wordpress_nginx_logs:/var/log/wordpress:ro
       - ./crowdsec/acquis.d:/etc/crowdsec/acquis.d
       - "${JOURNALCTL_VOL:-/var/log/journal}:/run/log/journal"
     ports:
@@ -79,6 +80,8 @@ volumes:
     external: false
   nginx_logs:
     external: false
+  wordpress_nginx_logs:
+    external: true
   crowdsec_config:
     external: false
   crowdsec_data:

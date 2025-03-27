@@ -38,14 +38,17 @@ else
   echo " -- Certbot init script already run. Skipping..."
 fi
 
+if [[ ! -f /etc/crontab ]]
+  echo " -- Setting up cronjob for ssl cert renewal"
 
-echo " -- Setting up cronjob for ssl cert renewal"
+  # modified from the original command in certbot docs to check once a day at midnight
+  # honestly, I think once a month would be sufficient
+  SLEEPTIME=$(awk 'BEGIN{srand(); print int(rand()*(3600+1))}'); echo "0 0 * * * root sleep $SLEEPTIME && certbot renew -q" | tee -a /etc/crontab > /dev/null
+else
+  echo " -- Skipping cronjob setup since crontab file already exists..."
+fi
 
-# modified from the original command in certbot docs to check once a day at midnight
-# honestly, I think once a month would be sufficient
-SLEEPTIME=$(awk 'BEGIN{srand(); print int(rand()*(3600+1))}'); echo "0 0 * * * root sleep $SLEEPTIME && certbot renew -q" | tee -a /etc/crontab > /dev/null
-
-# always tail this file to keep the container ruunning indefinitely
+# always tail this file to keep the container running indefinitely
 # (this container needs to be running 24/7 for the renewal cron job)
 touch $CERTBOT_WEBROOT/keep-running-file
 tail -f $CERTBOT_WEBROOT/keep-running-file

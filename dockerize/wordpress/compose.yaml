@@ -50,6 +50,8 @@ services:
     networks:
       - backend
       - default
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   phpmyadmin:
     image: phpmyadmin:5.2.2-fpm-alpine

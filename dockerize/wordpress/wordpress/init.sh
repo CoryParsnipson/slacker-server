@@ -15,5 +15,9 @@ cd ${WORDPRESS_DATA_DIR}
 mkdir -p wp-content/uploads/fonts
 chown -R www-data:www-data wp-content/uploads
 
+# touch the wordpress crowdsec plugin prepend file so the nginx config works
+mkdir -p wp-content/plugins/crowdsec/inc
+touch wp-content/plugins/crowdsec/inc/standalone-bounce.php
+
 # foreground the entrypoint process
 wait "$async_pid"

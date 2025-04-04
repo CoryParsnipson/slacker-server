@@ -24,6 +24,8 @@ services:
     networks:
       - default
       - wordpress_backend
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   db:
     image: jc21/mariadb-aria:10.11.5

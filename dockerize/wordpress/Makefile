@@ -12,6 +12,9 @@ MARIADB_ROOT_PASSWORD=password # this is for testing only...
 up:
 	docker compose up -d --build
 
+up-proxied:
+	docker compose --profile proxied up -d --build
+
 # run docker compose down
 down:
 	docker compose down

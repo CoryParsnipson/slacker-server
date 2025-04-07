@@ -4,9 +4,15 @@ Dockerized wordpress instance that uses FastCGI for php execution and nginx as a
 
 ## Bootstrap Instructions
 
+Common steps here:
+
 1. Populate secrets. See `secrets/README.md` for more information.
 
 1. Make sure the domain and email are correct at the top of `compose.yaml`
+
+### Running Wordpress as a standalone app on the server
+
+1. The rest of the steps here assume the domain and port forwarding and DNS have been setup already.
 
 1. Run docker compose (version from Makefile):
 
@@ -27,6 +33,20 @@ make down
 Alternatively, use `make clean` to also remove volumes and networks to completely remove all provisioned resources.
 
 Note, some things like volumes will still be around after this command.
+
+### Running Wordpress behind an nginx reverse proxy (like Nginx Proxy Manager)
+
+1. Setup the reverse proxy. The steps here specifically assume you are using the Nginx Proxy Manager tool, see instructions in the nginx-proxy-manager folder.
+
+1. Bring up the app in docker compose. You will need to use the proxied make commands instead of the default, which makes a standalone image:
+
+```
+make up-proxied
+```
+
+1. Create a proxy host to this app. The domain must match the domain at the top of `compose.yaml` (so go back and change that and remake this, if it's wrong). Select `http` as the scheme, and the name of the proxied nginx container (probably something like `wordpress-nginx-proxied-1`), and port 80. Click on the "SSL" tab and select "Create a new Certificate" to have letsencrypt get a new certificate for this. Now add an SSL cert, select "Force SSL" and "Support HTTP/2" if you want.
+
+1. Once the SSL cert is successfully created, you should be able to browse to the app and have a working ssl cert, without the backend nginx instance needing to handle SSL connections at all.
 
 ## More useful commands
 

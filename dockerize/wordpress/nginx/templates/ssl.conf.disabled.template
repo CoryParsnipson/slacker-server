@@ -18,7 +18,9 @@ server {
   listen       80;
   listen  [::]:80;
 
-  server_name   localhost $NGINX_DOMAIN;
+  # these extra server names are so you can match these rules even when the
+  # request originates from localhost or from another container on the same network
+  server_name   localhost nginx-proxied nginx-standalone $NGINX_DOMAIN;
   server_tokens off;
 
   root /var/www/html;
@@ -59,7 +61,9 @@ server {
   listen  [::]:443 ssl;
   http2   on;
 
-  server_name   localhost $NGINX_DOMAIN;
+  # these extra server names are so you can match these rules even when the
+  # request originates from localhost or from another container on the same network
+  server_name   localhost nginx-proxied nginx-standalone $NGINX_DOMAIN;
   server_tokens off;
 
   ssl_certificate /etc/nginx/ssl/live/$NGINX_DOMAIN/fullchain.pem;

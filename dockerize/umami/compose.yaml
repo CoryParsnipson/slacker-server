@@ -1,0 +1,30 @@
+services:
+  app:
+    image: umamisoftware/umami:postgresql-v2.18.1
+    restart: unless-stopped
+    depends_on:
+      - db
+    env_file:
+      - path: secrets/default.env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      DATABASE_TYPE: postgresql
+      APP_SECRET: /run/secrets/app-secret
+  db:
+    image: postgres:17.5-alpine3.22
+    restart: unless-stopped
+    shm_size: 2gb 
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    secrets:
+      - app-secret
+    env_file:
+      - path: secrets/default.env
+
+secrets:
+  app-secret:
+    file: secrets/app-secret.txt

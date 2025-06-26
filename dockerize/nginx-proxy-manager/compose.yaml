@@ -24,6 +24,7 @@ services:
     networks:
       - default
       - wordpress_backend
+      - umami_default
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
@@ -94,4 +95,6 @@ secrets:
 
 networks:
   wordpress_backend:
+    external: true
+  umami_default:
     external: true

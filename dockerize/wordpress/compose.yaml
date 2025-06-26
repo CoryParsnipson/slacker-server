@@ -117,7 +117,8 @@ services:
       - ./fail2ban/jail.local:/config/fail2ban/jail.local:ro
 
   nginx-standalone:
-    image: nginx:1.27.3
+    build:
+      context: ./nginx
     restart: unless-stopped
     profiles: ["", "standalone"]
     depends_on:
@@ -130,8 +131,6 @@ services:
     volumes:
       - nginx_logs:/etc/nginx/logs
       - nginx_config:/etc/nginx/conf.d
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx/templates:/etc/nginx/templates:ro
       - ./nginx/launch_init.sh:/docker-entrypoint.d/launch_init.sh
       - ./nginx/init.sh:/usr/bin/init.sh
       - *public-root-volume
@@ -148,7 +147,8 @@ services:
 
   # this profile is meant to be used behind a reverse proxy (specifically Nginx Proxy Manager)
   nginx-proxied:
-    image: nginx:1.27.3
+    build:
+      context: ./nginx
     restart: unless-stopped
     profiles: ["proxied"]
     depends_on:
@@ -161,8 +161,6 @@ services:
     volumes:
       - nginx_logs:/etc/nginx/logs
       - nginx_config:/etc/nginx/conf.d
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx/templates:/etc/nginx/templates:ro
       - *public-root-volume
       - phpmyadmin_data:/var/www/html/pma
     networks:

@@ -1,0 +1,56 @@
+services:
+  app:
+    image: ghcr.io/plankanban/planka:2.0.0-rc.3
+    restart: on-failure
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./data/favicons:/app/public/favicons
+      - ./data/user-avatars:/app/public/user-avatars
+      - ./data/background-images:/app/public/background-images
+      - ./data/attachments:/app/private/attachments
+    user: 1000:1000
+    environment:
+      - BASE_URL=https://planka.slackerparadise.com
+      - DATABASE_URL=postgresql://postgres:$${DATABASE_PASSWORD}@db/planka
+      - DATABASE_PASSWORD__FILE=/run/secrets/db_password
+      - SECRET_KEY__FILE=/run/secrets/secret_key
+      - TRUST_PROXY=true
+
+      - DEFAULT_ADMIN_EMAIL=cparsnipson@gmail.com
+      - DEFAULT_ADMIN_PASSWORD__FILE=/run/secrets/admin_password
+      - DEFAULT_ADMIN_NAME="Cory Parsnipson"
+      - DEFAULT_ADMIN_USERNAME="cory"
+
+      # - SMTP_PASSWORD=
+      # Optionally store in secrets - then SMTP_PASSWORD should not be set
+      # - SMTP_PASSWORD__FILE=/run/secrets/smtp_password
+      # - SMTP_FROM="Demo Demo" <demo@demo.demo>
+      # - SMTP_TLS_REJECT_UNAUTHORIZED=false
+    secrets:
+      - secret_key
+      - db_password
+      - admin_password
+
+  db:
+    image: postgres:16-alpine
+    restart: on-failure
+    volumes:
+      - ./data/db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=planka
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d planka"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+secrets:
+  secret_key:
+    file: secrets/secret-key.txt
+  db_password:
+    file: secrets/db-password.txt
+  admin_password:
+    file: secrets/admin-password.txt

@@ -23,8 +23,9 @@ services:
       - ./letsencrypt:/etc/letsencrypt
     networks:
       - default
-      - wordpress_backend
+      - planka_default
       - umami_default
+      - wordpress_backend
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
@@ -94,7 +95,9 @@ secrets:
     file: secrets/db-user-password.txt
 
 networks:
-  wordpress_backend:
+  planka_default:
     external: true
   umami_default:
+    external: true
+  wordpress_backend:
     external: true

@@ -62,6 +62,8 @@ Check the Makefile for useful commands, related to bootstrapping containers.
 
 1. Change the permalinks scheme to use post-name for better human readability of posts. (go to the Admin Dashboard > Settings > Permalinks > Permalink Structure)
 
+1. Install the "WP Robots Txt" plugin and edit the robots file. Currently, the domain is being scraped almost daily by Yandex, trying to query old urls that don't exist anymore. It would be useful to block this traffic.
+
 ## Installing the Wordpress Crowdsec bouncer
 
 It is highly recommended to integrate the wordpress bouncer with crowdsec, if that is available.

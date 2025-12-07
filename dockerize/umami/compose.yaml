@@ -1,6 +1,6 @@
 services:
   app:
-    image: umamisoftware/umami:postgresql-v2.18.1
+    image: umamisoftware/umami:postgres-v2.20.1
     restart: unless-stopped
     depends_on:
       - db

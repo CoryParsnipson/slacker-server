@@ -16,6 +16,29 @@ Docker compose deployment of Umami, an analytics software tool.
 
 ### Integrate Umami with Wordpress
 
-1. Install the "Integrate Umami" Wordpress plugin.
+1. Install the WPCode snippets plugin.
 
-1. Add the website ID of the WordPress blog and enable umami analytics and save settings.
+1. Create one HTML snippet and add the following as the content:
+
+   ```
+   <script src="url-to-your-umami-script" data-website-id="your-umami-website-id"></script>
+   <script src="/wp-content/uploads/umami-kit/umami-kit.js"></script>
+   ```
+
+   > NOTE: replace the "url-to-your-umami-script" and "your-umami-website-id" with the url and website id of your umami instance. More information can be found in the umami docs.
+
+   > NOTE: The second script line relies on umami kit being installed. There is a small change in the wordpress docker `init.sh` script where we download umami-kit to a subdirectory in wp-content that this line relies on.
+
+1. Call this script something like "Include Umami Kit". Make sure it is "Auto Insert" and then change the location to "Site Wide Footer".
+
+1. Press save or update to save the changes.
+
+1. Create another snippet that is Javascript and call it something like "Umami Kit Integration".
+
+1. Populate the body with manual javascript umami kit instantiation, as depicted in [the Umami Kit docs](https://github.com/rhelmer/umami-kit).
+
+   > WARNING: The class name of `UmamiKit` may have been changed to `UmamiTracker`, so the code example may need to be updated accordingly.
+
+1. Make sure it is "Auto Insert" and then change the location to "Site Wide Footer".
+
+1. Change the priority to higher than 10, so it executes after the previous snippet.

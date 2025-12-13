@@ -19,5 +19,9 @@ chown -R www-data:www-data wp-content/uploads
 mkdir -p wp-content/plugins/crowdsec/inc
 touch wp-content/plugins/crowdsec/inc/standalone-bounce.php
 
+# install umami kit (yes, this is really hacky)
+mkdir -p wp-content/uploads/umami-kit
+curl -d wp-content/uploads/umami-kit/umami-kit.js "https://raw.githubusercontent.com/rhelmer/umami-kit/refs/heads/main/umami-kit.js"
+
 # foreground the entrypoint process
 wait "$async_pid"

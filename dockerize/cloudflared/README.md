@@ -54,6 +54,8 @@ See [the cloudflare blog post about argo tunnels](https://blog.cloudflare.com/ar
 
    > NOTE: This will not create an associated DNS record because it's using a wildcard. It should already be added by the tunnel setup, so we are good here.
 
+1. Add another ingress route for the root domain. Leave the subdomain blank and point it to the same NPM ingress as the previous ingress record. This will let <mydomain.com> (no prefix) reach NPM properly.
+
 1. Lastly, you need to add the root DNS record (for when someone types in <domainname.com> without any prefix). Add a new DNS record with type CNAME, use <mydomain.com> as the name, and then use "\<tunnel_id\>.cfargotunnel.com" as the target.
 
 1. Browse to the NPM admin control panel and change all proxy hosts settings to make sure "Force SSL" is unchecked, since cloudflare is now handling SSL. Once that is done, everything should be working again!

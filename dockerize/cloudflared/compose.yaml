@@ -1,0 +1,20 @@
+services:
+  app:
+    image: cloudflare/cloudflared:1818-66587173e2cd
+    restart: unless-stopped 
+    environment:
+      TUNNEL_TOKEN_FILE: /run/secrets/tunnel-token
+      NO_AUTOUPDATE: "true"
+    secrets:
+      - tunnel-token
+    command: tunnel run
+    networks:
+      - entry_default # this is nginx-proxy-manager network (default network may not allow dns resolution)
+
+secrets:
+  tunnel-token:
+    file: secrets/tunnel-token.txt
+
+networks:
+  entry_default:
+    external: true

@@ -42,7 +42,6 @@ server {
 
   # php rules
   location ~ \.php$ {
-    try_files $fastcgi_script_name = 404;
     include fastcgi_params;
 
     # fastcgi settings

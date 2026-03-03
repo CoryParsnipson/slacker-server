@@ -42,6 +42,7 @@ services:
       # in the nginx container
       - *public-root-volume
       - ./wordpress/init.sh:/usr/bin/init.sh
+      - ./wordpress/wp-config.php:/var/www/html/wp-config.php
     entrypoint: [ "init.sh" ]
     secrets:
       - db_user_name

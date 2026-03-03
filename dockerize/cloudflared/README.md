@@ -59,3 +59,7 @@ See [the cloudflare blog post about argo tunnels](https://blog.cloudflare.com/ar
 1. Lastly, you need to add the root DNS record (for when someone types in <domainname.com> without any prefix). Add a new DNS record with type CNAME, use <mydomain.com> as the name, and then use "\<tunnel_id\>.cfargotunnel.com" as the target.
 
 1. Browse to the NPM admin control panel and change all proxy hosts settings to make sure "Force SSL" is unchecked, since cloudflare is now handling SSL. Once that is done, everything should be working again!
+
+1. Wordpress may need additional configuration changes to work again (the login may be broken).
+
+   See [this commit](https://github.com/CoryParsnipson/slacker-server/commit/e546c83777574214bd778170a89fda9e78c6585a) for information about changes to get things working.

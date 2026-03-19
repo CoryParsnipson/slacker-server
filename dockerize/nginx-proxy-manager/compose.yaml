@@ -45,7 +45,7 @@ services:
       - ./mysql:/var/lib/mysql
 
   crowdsec:
-    image: crowdsecurity/crowdsec:v1.6.5-debian
+    image: crowdsecurity/crowdsec:v1.7.6-debian
     restart: unless-stopped
     environment:
       COLLECTIONS: "crowdsecurity/nginx"

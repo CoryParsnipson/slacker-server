@@ -21,6 +21,7 @@ services:
     volumes:
       - ./data:/data
       - ./letsencrypt:/etc/letsencrypt
+      - ./npm/nginx.conf:/etc/nginx/nginx.conf
     networks:
       - default
       - planka_default
